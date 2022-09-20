@@ -10,5 +10,8 @@ npm-debug.*
 *.orig.*
 web-build/
 
+# Temporary
+package-lock.json
+
 # macOS
 .DS_Store
