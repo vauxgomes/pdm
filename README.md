@@ -51,7 +51,7 @@ Este repostitório faz uso de um APIs construída em NodeJS e que está disponí
 Caso queira citar este projeto:
 
 ```bibtex
-@software{GomesNunes2022,
+@software{GomesVaux2022,
     author = {Gomes, Vaux Sandino Diniz},
     month = {9},
     title = {{Restaurant Menu Manager Frontend}},
