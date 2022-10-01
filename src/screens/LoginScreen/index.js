@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   TouchableOpacity,
   StyleSheet,
@@ -10,7 +10,22 @@ import Button from '../../components/Button'
 
 import { color, flex, font, form, margin, space } from '../../styles'
 
-export default function LoginScreen() {
+import api from '../../services/api'
+
+export default function LoginScreen({ setToken }) {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+
+  function handleSubmit(e) {
+    api.login(username, password).then((response) => {
+      if (response.success) {
+        setToken(response.token)
+      } else {
+        alert(response.message)
+      }
+    })
+  }
+
   return (
     <View style={styles.container}>
       <View>
@@ -29,6 +44,8 @@ export default function LoginScreen() {
               style={form.input}
               placeholder="Usuário do sistema"
               placeholderTextColor={color.line}
+              value={username}
+              onChangeText={setUsername}
             />
           </View>
 
@@ -40,12 +57,19 @@ export default function LoginScreen() {
               style={form.input}
               placeholder="Senha de 6 dígitos"
               placeholderTextColor={color.line}
+              value={password}
+              onChangeText={setPassword}
             />
           </View>
 
           {/* Botões */}
           <View style={[flex.row, flex.alignCenter, margin.bottom.md]}>
-            <Button style={margin.end.sm} title="Entrar" type="primary" />
+            <Button
+              style={margin.end.sm}
+              title="Entrar"
+              type="primary"
+              onPress={handleSubmit}
+            />
             <Button title="Criar nova conta" outline />
           </View>
         </View>
