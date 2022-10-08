@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   Modal,
   ScrollView,
@@ -15,14 +15,59 @@ import Dish from '../../components/Dish'
 
 import { color, flex, font, form, margin, space } from '../../styles'
 
-export default function DishesScreen() {
+import api from '../../../providers/services/api'
+import { Context } from '../../../providers/contexts/context'
+
+export default function DishesScreen({ navigation, route }) {
+  const { id, name: title } = route.params
+  const { token } = useContext(Context)
+
+  const [dishes, setDishes] = useState([])
   const [modalVisible, setModalVisible] = useState(false)
+
+  const [name, setName] = useState('')
+  const [description, setDescription] = useState('')
+  const [price, setPrice] = useState(0)
+
+  useEffect(() => {
+    api
+      .token(token)
+      .getItens(id)
+      .then((res) => {
+        setDishes(res)
+      })
+  }, [token])
+
+  function handleAddDish() {
+    const dish = {
+      name,
+      description,
+      price,
+    }
+
+    if (name && description && price) {
+      api
+        .token(token)
+        .postItem(id, dish)
+        .then((res) => {
+          dish.id = res.id
+          setDishes((prev) => [dish, ...prev])
+
+          setModalVisible(false)
+          setName('')
+          setDescription('')
+          setPrice('')
+        })
+    } else {
+      alert('Preencha todos os campos')
+    }
+  }
 
   return (
     <View style={styles.container}>
       {/* Título */}
       <View style={styles.header}>
-        <Text style={styles.title}>Entradas</Text>
+        <Text style={styles.title}>{title}</Text>
 
         <TouchableOpacity
           style={styles.addButton}
@@ -33,9 +78,9 @@ export default function DishesScreen() {
       </View>
 
       <ScrollView>
-        <Dish dish={{}} />
-        <Dish dish={{}} />
-        <Dish dish={{}} />
+        {dishes.map((dish, key) => (
+          <Dish dish={dish} key={key} />
+        ))}
       </ScrollView>
 
       {/* Modal de cadastro */}
@@ -52,13 +97,19 @@ export default function DishesScreen() {
             {/* Name */}
             <View style={margin.bottom.sm}>
               <Text style={form.label}>Nome</Text>
-              <TextInput style={form.input} />
+              <TextInput
+                value={name}
+                onChangeText={setName}
+                style={form.input}
+              />
             </View>
 
             {/* Description */}
             <View style={margin.bottom.sm}>
               <Text style={form.label}>Descrição</Text>
               <TextInput
+                value={description}
+                onChangeText={setDescription}
                 style={form.input}
                 editable
                 multiline
@@ -69,10 +120,19 @@ export default function DishesScreen() {
             {/* Price */}
             <View style={margin.bottom.sm}>
               <Text style={form.label}>Preço</Text>
-              <TextInput style={form.input} />
+              <TextInput
+                value={price}
+                onChangeText={setPrice}
+                style={form.input}
+              />
             </View>
 
-            <Button title="Salvar" type="primary" style={margin.bottom.sm} />
+            <Button
+              title="Salvar"
+              type="primary"
+              style={margin.bottom.sm}
+              onPress={handleAddDish}
+            />
             <Button
               title="Cancelar"
               type="secondary"

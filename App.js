@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { useFonts } from 'expo-font'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
@@ -9,17 +9,19 @@ import DishesScreen from './src/screens/DishesScreen'
 
 const Stack = createNativeStackNavigator()
 
-export default function App() {
+import ContextProvider, { Context } from './providers/contexts/context'
+
+function Main() {
   const [loadedFonts] = useFonts({
     Montserrat: require('./assets/fonts/Montserrat.ttf'),
     OpenSans: require('./assets/fonts/OpenSans.ttf'),
   })
 
-  const [token, setToken] = useState('')
+  const { token } = useContext(Context)
 
-  // if (!token) {
-  //   return <LoginScreen setToken={setToken} />
-  // }
+  if (!token) {
+    return <LoginScreen />
+  }
 
   return (
     <NavigationContainer>
@@ -28,5 +30,13 @@ export default function App() {
         <Stack.Screen name="Dishes" component={DishesScreen} />
       </Stack.Navigator>
     </NavigationContainer>
+  )
+}
+
+export default function App() {
+  return (
+    <ContextProvider>
+      <Main />
+    </ContextProvider>
   )
 }

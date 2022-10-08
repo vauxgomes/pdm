@@ -44,6 +44,36 @@ class API {
     const response = await this.api.post('/login', { username, password })
     return response.data
   }
+
+  /** Cardápios */
+  async getCardapios() {
+    const response = await this.api.get('/categories', this.config)
+    return response.data
+  }
+
+  async postCardapio(menu) {
+    const response = await this.api.post(
+      '/categories/create',
+      menu,
+      this.config
+    )
+    return response.data
+  }
+
+  /** Itens */
+  async getItens(id) {
+    const response = await this.api.get(`/categories/${id}/items`, this.config)
+    return response.data
+  }
+
+  async postItem(id, dish) {
+    const response = await this.api.post(
+      `/categories/${id}/items/create`,
+      dish,
+      this.config
+    )
+    return response.data
+  }
 }
 
 export default new API()

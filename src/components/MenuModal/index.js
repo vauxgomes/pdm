@@ -6,13 +6,27 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { color, font, form, margin, space } from '../../styles'
 import Button from '../Button'
 
-export default function MenuModal({ visible, hide, addMenu }) {
+export default function MenuModal({
+  menu,
+  visible,
+  hide,
+  addMenu,
+  updateMenu,
+}) {
   const [name, setName] = useState('')
 
   function onSave() {
     if (name) {
-      const menu = { name, order: 0, size: 0 }
-      addMenu(menu)
+      if (menu) {
+        // Atualização
+        menu.name = name
+        updateMenu(menu)
+      } else {
+        // Criação
+        const menu = { name, order: 0, size: 0 }
+        addMenu(menu)
+      }
+
       setName('')
       hide()
     } else {
@@ -39,12 +53,12 @@ export default function MenuModal({ visible, hide, addMenu }) {
               <Text style={form.label}>Nome</Text>
               <TextInput
                 style={form.input}
-                value={name}
+                value={menu ? menu.name : name}
                 onChangeText={setName}
               />
             </View>
 
-            <Button title="Salvar" onPress={onSave} />
+            <Button title={menu ? 'Atualizar' : 'Salvar'} onPress={onSave} />
           </View>
         </View>
       </View>

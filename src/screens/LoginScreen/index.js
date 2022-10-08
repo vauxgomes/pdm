@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {
   TouchableOpacity,
   StyleSheet,
@@ -10,16 +10,19 @@ import Button from '../../components/Button'
 
 import { color, flex, font, form, margin, space } from '../../styles'
 
-import api from '../../services/api'
+import api from '../../../providers/services/api'
+import { Context } from '../../../providers/contexts/context'
 
-export default function LoginScreen({ setToken }) {
+export default function LoginScreen() {
+  const { handleLogin } = useContext(Context)
+
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
   function handleSubmit(e) {
     api.login(username, password).then((response) => {
       if (response.success) {
-        setToken(response.token)
+        handleLogin(response.token)
       } else {
         alert(response.message)
       }

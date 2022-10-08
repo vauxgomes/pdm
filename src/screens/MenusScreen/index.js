@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   ScrollView,
   StyleSheet,
@@ -13,12 +13,36 @@ import MenuModal from '../../components/MenuModal'
 
 import { color, font, space } from '../../styles'
 
+import api from '../../../providers/services/api'
+import { Context } from '../../../providers/contexts/context'
+
 export default function MenusScreen({ navigation, route }) {
-  const [modalVisible, setModalVisible] = useState(false)
+  const { token } = useContext(Context)
+
   const [menus, setMenus] = useState([])
+  const [modalVisible, setModalVisible] = useState(false)
+
+  useEffect(() => {
+    api
+      .token(token)
+      .getCardapios()
+      .then((res) => {
+        setMenus(res)
+      })
+  }, [token])
 
   function addMenu(menu) {
-    setMenus((prev) => [menu, ...menus])
+    api
+      .token(token)
+      .postCardapio(menu)
+      .then((res) => {
+        menu.id = res
+        setMenus((prev) => [menu, ...prev])
+      })
+  }
+
+  function onPress(menu) {
+    navigation.push('Dishes', { id: menu.id, name: menu.name })
   }
 
   return (
@@ -37,9 +61,8 @@ export default function MenusScreen({ navigation, route }) {
 
       {/* Entradas */}
       <ScrollView>
-        {/* <Menu menu={{ name: 'Entrada', size: 3 }} /> */}
         {menus.map((menu, key) => (
-          <Menu menu={menu} key={key} />
+          <Menu menu={menu} key={key} onPress={() => onPress(menu)} />
         ))}
       </ScrollView>
 

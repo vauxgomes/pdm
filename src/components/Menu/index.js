@@ -4,9 +4,9 @@ import Icon from 'react-native-vector-icons/FontAwesome5'
 
 import { color, flex, font, margin, space } from '../../styles'
 
-export default function Menu({ menu }) {
+export default function Menu({ menu, onPress }) {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={[flex.row, flex.alignCenter]}>
         <Icon
           name="grip-lines"
