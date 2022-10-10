@@ -2,7 +2,7 @@ import React from 'react'
 import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import { color, font, shadow, space } from '../../styles'
 
-export default function Dish({ dish }) {
+export default function Item({ item }) {
   return (
     <TouchableOpacity style={styles.container}>
       <View style={styles.infoContainer}>
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     padding: space.sm,
     marginBottom: space.sm,
 
-    backgroundColor: color.line,
+    backgroundColor: color.primary,
     borderRadius: 4,
   },
 
@@ -51,12 +51,13 @@ const styles = StyleSheet.create({
     fontSize: font.size.lg,
     fontWeight: 'bold',
     marginBottom: space.xs,
+    color: color.white,
   },
 
   description: {
     fontFamily: font.family,
     fontSize: font.size.md,
-    color: color.secondary,
+    color: color.white,
     marginBottom: space.sm,
   },
 
@@ -64,6 +65,7 @@ const styles = StyleSheet.create({
     fontFamily: font.family,
     fontSize: font.size.md,
     fontWeight: '900',
+    color: color.white,
   },
 
   img: {

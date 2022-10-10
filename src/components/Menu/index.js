@@ -2,24 +2,20 @@ import React from 'react'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 
-import { color, flex, font, margin, space } from '../../styles'
+import { color, flex, font, margin, shadow, space } from '../../styles'
 
 export default function Menu({ menu, onPress }) {
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
-      <View style={[flex.row, flex.alignCenter]}>
-        <Icon
-          name="grip-lines"
-          size={font.size.lg}
-          color={color.muted}
-          style={margin.end.sm}
-        />
-        <Text style={styles.name}>{menu.name}</Text>
-      </View>
+    <TouchableOpacity style={[styles.container, shadow.sm]} onPress={onPress}>
+      <Text style={styles.name}>{menu.name}</Text>
 
-      <View style={styles.tagContainer}>
-        <Text style={styles.tagText}>3</Text>
-      </View>
+      <TouchableOpacity style={[styles.btn, styles.editButton]}>
+        <Icon name="edit" size={font.size.md} />
+      </TouchableOpacity>
+
+      <TouchableOpacity style={[styles.btn, styles.removeButton]}>
+        <Icon name="trash-alt" size={font.size.md} color="white" />
+      </TouchableOpacity>
     </TouchableOpacity>
   )
 }
@@ -27,36 +23,38 @@ export default function Menu({ menu, onPress }) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'stretch',
     justifyContent: 'space-between',
 
-    padding: space.sm,
-    paddingVertical: space.md,
     marginBottom: space.sm,
-
-    backgroundColor: color.line,
     borderRadius: 4,
+
+    overflow: 'hidden',
   },
 
   name: {
+    width: '100%',
+    backgroundColor: color.primary,
+
+    padding: space.sm,
+    paddingVertical: space.md,
+
     fontFamily: font.family,
-    fontSize: font.size.md,
-  },
-
-  tagContainer: {
-    alignItems: 'center',
-
-    paddingVertical: space.xs,
-    paddingHorizontal: space.sm * 1.5,
-
-    backgroundColor: color.secondary,
-    borderRadius: 50,
-  },
-
-  tagText: {
-    fontFamily: font.family,
+    fontSize: font.size.lg,
     color: 'white',
-    fontWeight: 'bold',
-    fontSize: font.size.sm,
+  },
+
+  btn: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: space.md * 1.5,
+  },
+
+  editButton: {
+    backgroundColor: color.warning,
+  },
+
+  removeButton: {
+    backgroundColor: color.secondary,
   },
 })

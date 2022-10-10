@@ -6,12 +6,12 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon from 'react-native-vector-icons/MaterialIcons'
 
 import Menu from '../../components/Menu'
 import MenuModal from '../../components/MenuModal'
 
-import { color, font, space } from '../../styles'
+import { color, flex, font, space } from '../../styles'
 
 import api from '../../../providers/services/api'
 import { Context } from '../../../providers/contexts/context'
@@ -42,7 +42,7 @@ export default function MenusScreen({ navigation, route }) {
   }
 
   function onPress(menu) {
-    navigation.push('Dishes', { id: menu.id, name: menu.name })
+    navigation.push('Items', { id: menu.id, name: menu.name })
   }
 
   return (
@@ -55,7 +55,7 @@ export default function MenusScreen({ navigation, route }) {
           style={styles.addButton}
           onPress={() => setModalVisible(true)}
         >
-          <Icon name="plus" size={font.size.xl} color={color.white} />
+          <Icon name="add" size={font.size.xl} color={color.white} />
         </TouchableOpacity>
       </View>
 
@@ -79,6 +79,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: space.lg,
+    backgroundColor: 'white'
   },
 
   header: {
@@ -102,7 +103,7 @@ const styles = StyleSheet.create({
     width: 30,
 
     padding: space.xs,
-    backgroundColor: color.primary,
-    borderRadius: 50,
+    backgroundColor: color.secondary,
+    borderRadius: 4,
   },
 })

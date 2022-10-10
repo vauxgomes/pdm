@@ -24,11 +24,11 @@ export const font = {
 
 // Colors
 export const color = {
-  primary: '#0d6efd',
+  primary: '#643fbc',
   secondary: '#6c757d',
   success: '#28a745',
   danger: '#ffc107',
-  warning: '#e0a800',
+  warning: '#ffc107',
   white: '#ffffff',
   gray: '#9eadb9',
   light: '#f8f9fa',
