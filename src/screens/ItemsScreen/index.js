@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
+  Alert,
+  RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
@@ -12,52 +14,97 @@ import Item from '../../components/Item'
 
 import { color, font, space } from '../../styles'
 
-import { Context } from '../../../providers/contexts/context'
 import api from '../../../providers/services/api'
+import { Context } from '../../../providers/contexts/context'
 
 export default function ItemsScreen({ navigation, route }) {
-  const { id, name: title } = route.params
+  const { cardapio } = route.params
   const { token } = useContext(Context)
 
   const [loading, setLoading] = useState(false)
-  const [items, setItems] = useState([])
+  const [refreshing, setRefreshing] = useState(false)
+
+  const [itens, setItens] = useState([])
 
   useEffect(() => {
     setLoading(true)
+    getItens()
 
+    // Botão Add no Header
+    navigation.setOptions({
+      title: cardapio.name,
+      headerRight: () => (
+        <TouchableOpacity
+          style={styles.addButton}
+          onPress={(e) => {
+            navigation.push('ItemForm', { onSubmit })
+          }}
+        >
+          <Icon name="add" size={25} color={color.primary} />
+        </TouchableOpacity>
+      ),
+    })
+  }, [token, navigation])
+
+  function onRefresh() {
+    setRefreshing(true)
+    new Promise((resolve) => setTimeout(resolve, 1000)).then(() =>
+      setRefreshing(false)
+    )
+
+    getItens()
+  }
+
+  function getItens() {
     api
       .token(token)
-      .getItens(id)
+      .getItens(cardapio.id)
       .then((res) => {
-        setItems(res)
+        setItens(res)
       })
       .finally(() => {
         setLoading(false)
       })
-  }, [token])
+  }
 
-  function onAddItem(item) {
-    setItems((prev) => [item, ...prev])
+  function handleRemoveItem(item) {
+    Alert.alert('Confirmação', 'Realmente deseja deletar esse registro?', [
+      {
+        text: 'Sim',
+        onPress: () => {
+          // TODO API
+          setItens((prev) => prev.filter((it) => it.id !== item.id))
+        },
+      },
+      {
+        text: 'Não',
+        style: 'cancel',
+      },
+    ])
+  }
+
+  function onSubmit(item) {
+    if (!item?.id) {
+      api
+        .token(token)
+        .postItem(cardapio.id, item)
+        .then((res) => {
+          item.id = res
+          setItens((prev) => [item, ...prev])
+        })
+    } else {
+      // TODO API
+      const index = itens.findIndex((it) => it.id === item.id)
+      const itens__ = [...itens]
+      itens__[index] = item // Novo item
+      setItens(itens__)
+    }
   }
 
   return (
     <View style={styles.container}>
-      {/* Título */}
-      <View style={styles.header}>
-        <Text style={styles.title}>{title}</Text>
-
-        <TouchableOpacity
-          style={styles.addButton}
-          onPress={(e) => {
-            navigation.push('Item', { category_id: id, onAddItem })
-          }}
-        >
-          <Icon name="add" size={25} color={'white'} />
-        </TouchableOpacity>
-      </View>
-
       {/* Empty */}
-      {items.length === 0 && !loading && (
+      {itens.length === 0 && !loading && (
         <View>
           <Text>Adicione seu primeiro ítem no botão acima!</Text>
         </View>
@@ -70,9 +117,24 @@ export default function ItemsScreen({ navigation, route }) {
         </View>
       )}
 
-      <ScrollView>
-        {items.map((item, key) => (
-          <Item item={item} key={key} />
+      {/* Listagem */}
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        {itens.map((item, key) => (
+          <Item
+            item={item}
+            key={key}
+            onPress={() =>
+              navigation.navigate('ItemForm', {
+                item,
+                onSubmit,
+              })
+            }
+            onLongPress={() => handleRemoveItem(item)}
+          />
         ))}
       </ScrollView>
     </View>
@@ -83,6 +145,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: space.lg,
+    backgroundColor: color.white,
   },
 
   header: {
@@ -101,11 +164,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
 
-    height: 30,
-    width: 30,
+    // height: 30,
+    // width: 30,
 
     padding: space.xs,
-    backgroundColor: color.secondary,
+    backgroundColor: color.white,
     borderRadius: 4,
   },
 

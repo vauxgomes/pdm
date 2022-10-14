@@ -43,14 +43,14 @@ const styles = StyleSheet.create({
 
   text: {
     color: '#fff',
-    fontFamily: font.family,
-    fontSize: font.size.md,
+    // fontFamily: font.family,
+    fontSize: font.size.md * 1.1,
     fontWeight: '400',
   },
 
   textOutline: {
     color: color.dark,
-    fontSize: font.size.md,
+    fontSize: font.size.md * 1.1,
   },
 
   buttonsView: {

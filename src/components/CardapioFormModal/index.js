@@ -6,27 +6,17 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { color, font, form, margin, space } from '../../styles'
 import Button from '../Button'
 
-export default function MenuModal({
-  menu,
+export default function CardapioFormModal({
+  cardapio,
   visible,
   hide,
-  addMenu,
-  updateMenu,
+  onSubmit,
 }) {
-  const [name, setName] = useState('')
+  const [name, setName] = useState(cardapio?.name || '')
 
   function onSave() {
     if (name) {
-      if (menu) {
-        // Atualização
-        menu.name = name
-        updateMenu(menu)
-      } else {
-        // Criação
-        const menu = { name, order: 0, size: 0 }
-        addMenu(menu)
-      }
-
+      onSubmit({ ...cardapio, name })
       setName('')
       hide()
     } else {
@@ -53,12 +43,16 @@ export default function MenuModal({
               <Text style={form.label}>Nome</Text>
               <TextInput
                 style={form.input}
-                value={menu ? menu.name : name}
+                value={name}
                 onChangeText={setName}
+                placeholder={cardapio?.name}
               />
             </View>
 
-            <Button title={menu ? 'Atualizar' : 'Salvar'} onPress={onSave} />
+            <Button
+              title={cardapio ? 'Atualizar' : 'Salvar'}
+              onPress={onSave}
+            />
           </View>
         </View>
       </View>
@@ -82,7 +76,6 @@ const styles = StyleSheet.create({
   },
 
   header: {
-    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -94,7 +87,7 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontFamily: font.family,
+    // fontFamily: font.family,
     fontSize: font.size.xl,
   },
 })

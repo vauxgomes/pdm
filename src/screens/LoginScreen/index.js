@@ -79,7 +79,7 @@ export default function LoginScreen() {
 
         {/* Esqueci a senha */}
         <View style={[flex.row, flex.alignCenter]}>
-          <Text style={{ color: color.muted, fontFamily: font.family }}>
+          <Text style={{ color: color.muted /*,fontFamily: font.family*/ }}>
             Esqueceu a senha?{' '}
           </Text>
           <TouchableOpacity>
@@ -87,7 +87,7 @@ export default function LoginScreen() {
               style={{
                 color: color.muted,
                 fontWeight: 'bold',
-                fontFamily: font.family,
+                // fontFamily: font.family,
               }}
             >
               Clique aqui!
@@ -112,14 +112,14 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontFamily: font.family,
+    // fontFamily: font.family,
     marginBottom: space.sm,
     fontSize: font.size.xl,
     fontWeight: 'bold',
   },
 
   subtitle: {
-    fontFamily: font.family,
+    // fontFamily: font.family,
     fontSize: font.size.md,
     color: color.secondary,
   },
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
   },
 
   footer: {
-    fontFamily: font.family,
+    // fontFamily: font.family,
     color: color.muted,
     fontSize: font.size.md,
   },

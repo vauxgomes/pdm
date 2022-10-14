@@ -2,27 +2,32 @@ import React from 'react'
 import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import { color, font, shadow, space } from '../../styles'
 
-export default function Item({ item }) {
+export default function Item({ item, onPress, onLongPress }) {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={onPress}
+      onLongPress={onLongPress}
+    >
       <View style={styles.infoContainer}>
         <View>
-          <Text style={styles.title}>Salmão e Cebola</Text>
-          <Text style={styles.description}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor.
-          </Text>
+          <Text style={styles.title}>{item.name}</Text>
+          <Text style={styles.description}>{item.description}</Text>
         </View>
 
-        <Text style={styles.price}>R$ 6,50</Text>
+        <Text style={styles.price}>
+          {item.price &&
+            item.price.toLocaleString('pt-BR', {
+              style: 'currency',
+              currency: 'BRL',
+            })}
+        </Text>
       </View>
 
-      <View style={styles.img}>
-        <Image
-          source={require('../../../assets/imgs/dummy.jpg')}
-          style={{ height: 100, width: 100 }}
-        />
-      </View>
+      <Image
+        source={item?.img_url || require('../../../assets/imgs/dummy.jpg')}
+        style={styles.img}
+      />
     </TouchableOpacity>
   )
 }
@@ -30,7 +35,7 @@ export default function Item({ item }) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'stretch',
     justifyContent: 'space-between',
 
     padding: space.sm,
@@ -47,7 +52,7 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontFamily: font.family,
+    // fontFamily: font.family,
     fontSize: font.size.lg,
     fontWeight: 'bold',
     marginBottom: space.xs,
@@ -55,20 +60,23 @@ const styles = StyleSheet.create({
   },
 
   description: {
-    fontFamily: font.family,
+    // fontFamily: font.family,
     fontSize: font.size.md,
     color: color.white,
     marginBottom: space.sm,
   },
 
   price: {
-    fontFamily: font.family,
+    // fontFamily: font.family,
     fontSize: font.size.md,
     fontWeight: '900',
     color: color.white,
   },
 
   img: {
-    width: 100,
+    width: 70,
+    height: 70,
+    borderRadius: 4,
+    shadow,
   },
 })

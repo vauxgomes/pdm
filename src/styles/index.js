@@ -25,12 +25,13 @@ export const font = {
 // Colors
 export const color = {
   primary: '#643fbc',
-  secondary: '#6c757d',
+  secondary: '#e64b96',
   success: '#28a745',
   danger: '#ffc107',
-  warning: '#ffc107',
+  warning: '#ffbc42',
   white: '#ffffff',
   gray: '#9eadb9',
+  darkGray: '#6c757d',
   light: '#f8f9fa',
   dark: '#343a40',
   muted: '#6c757d',
@@ -117,15 +118,15 @@ export const margin = {
 export const form = {
   label: {
     marginBottom: space.sm,
-    color: color.secondary,
-    fontFamily: font.family,
-    fontSize: font.size.md,
+    color: color.darkGray,
+    // fontFamily: font.family,
+    fontSize: font.size.md*1.2,
   },
 
   input: {
     padding: space.sm,
 
-    fontFamily: font.family,
+    // fontFamily: font.family,
     fontSize: font.size.md,
 
     borderWidth: 2,

@@ -51,10 +51,10 @@ class API {
     return response.data
   }
 
-  async postCardapio(menu) {
+  async postCardapio(cardapio) {
     const response = await this.api.post(
       '/categories/create',
-      menu,
+      cardapio,
       this.config
     )
     return response.data
@@ -66,10 +66,10 @@ class API {
     return response.data
   }
 
-  async postItem(id, dish) {
+  async postItem(id, item) {
     const response = await this.api.post(
       `/categories/${id}/items/create`,
-      dish,
+      item,
       this.config
     )
     return response.data

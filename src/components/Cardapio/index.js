@@ -4,16 +4,27 @@ import Icon from 'react-native-vector-icons/FontAwesome5'
 
 import { color, flex, font, margin, shadow, space } from '../../styles'
 
-export default function Menu({ menu, onPress }) {
+export default function Cardapio({
+  cardapio,
+  onPress,
+  onPressEdit,
+  onPressRemove,
+}) {
   return (
     <TouchableOpacity style={[styles.container, shadow.sm]} onPress={onPress}>
-      <Text style={styles.name}>{menu.name}</Text>
+      <Text style={styles.name}>{cardapio.name}</Text>
 
-      <TouchableOpacity style={[styles.btn, styles.editButton]}>
+      <TouchableOpacity
+        style={[styles.btn, styles.editButton]}
+        onPress={onPressEdit}
+      >
         <Icon name="edit" size={font.size.md} />
       </TouchableOpacity>
 
-      <TouchableOpacity style={[styles.btn, styles.removeButton]}>
+      <TouchableOpacity
+        style={[styles.btn, styles.removeButton]}
+        onPress={onPressRemove}
+      >
         <Icon name="trash-alt" size={font.size.md} color="white" />
       </TouchableOpacity>
     </TouchableOpacity>
@@ -22,6 +33,7 @@ export default function Menu({ menu, onPress }) {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'stretch',
     justifyContent: 'space-between',
@@ -33,13 +45,13 @@ const styles = StyleSheet.create({
   },
 
   name: {
-    width: '100%',
+    flexGrow: 1,
     backgroundColor: color.primary,
 
     padding: space.sm,
     paddingVertical: space.md,
 
-    fontFamily: font.family,
+    // fontFamily: font.family,
     fontSize: font.size.lg,
     color: 'white',
   },
@@ -55,6 +67,6 @@ const styles = StyleSheet.create({
   },
 
   removeButton: {
-    backgroundColor: color.secondary,
+    backgroundColor: color.darkGray,
   },
 })

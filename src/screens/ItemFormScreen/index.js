@@ -1,59 +1,30 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, Text, TextInput, View } from 'react-native'
 
 import Button from '../../components/Button'
 
 import { color, flex, font, form, margin, space } from '../../styles'
 
-import { Context } from '../../../providers/contexts/context'
-import api from '../../../providers/services/api'
-
-export default function ItemsScreen({ navigation, route }) {
-  const {
-    category_id = null,
-    item = null,
-    onAddItem = () => {},
-    onUpdateItem = () => {},
-  } = route.params
-
-  const { token } = useContext(Context)
+export default function ItemsFromScreen({ navigation, route }) {
+  const { category_id = null, item = null, onSubmit } = route.params
 
   const [name, setName] = useState(item?.name || '')
   const [description, setDescription] = useState(item?.description || '')
   const [price, setPrice] = useState(item?.price || 0)
+  const [imgUrl, setImgUrl] = useState(item?.img_url || '')
 
   function handleSubmit() {
-    const item__ = {
-      name,
-      description,
-      price,
-    }
-
-    if (!category_id) {
-    }
-
     if (name && description && price) {
-      if (!item?.id) {
-        // POST
-        api
-          .token(token)
-          .postItem(category_id, item__)
-          .then((res) => {
-            // Update id
-            item__.id = res.id
+      onSubmit({
+        ...item, // Aproveito tudo que está em item
+        name,
+        description,
+        price,
+        img_url: imgUrl,
+      })
 
-            // Reset inputs
-            setName('')
-            setDescription('')
-            setPrice('')
-
-            // Update screen
-            onAddItem(item__)
-            navigation.pop()
-          })
-      } else {
-        // PUT
-      }
+      // Espero o retorno do submit
+      navigation.pop()
     } else {
       alert('Preencha todos os campos')
     }
@@ -61,10 +32,6 @@ export default function ItemsScreen({ navigation, route }) {
 
   return (
     <View style={styles.container}>
-      <View style={margin.bottom.md}>
-        <Text style={styles.title}>{item ? 'Atualização' : 'Cadastro'}</Text>
-      </View>
-
       {/* Name */}
       <View style={margin.bottom.sm}>
         <Text style={form.label}>Nome</Text>
@@ -78,8 +45,7 @@ export default function ItemsScreen({ navigation, route }) {
           value={description}
           onChangeText={setDescription}
           style={form.input}
-          editable
-          multiline
+          multiline={true}
           numberOfLines={4}
         />
       </View>
@@ -90,6 +56,13 @@ export default function ItemsScreen({ navigation, route }) {
         <TextInput value={price} onChangeText={setPrice} style={form.input} />
       </View>
 
+      {/* Image */}
+      <View style={margin.bottom.md}>
+        <Text style={form.label}>Imagem (URL)</Text>
+        <TextInput value={imgUrl} onChangeText={setImgUrl} style={form.input} />
+      </View>
+
+      {/* Botões */}
       <View style={[flex.flex, flex.row]}>
         <Button
           title="Salvar"
@@ -111,6 +84,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: space.lg,
+    backgroundColor: color.white,
   },
 
   header: {

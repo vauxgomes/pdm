@@ -4,17 +4,18 @@ export const Context = createContext()
 
 export default function ContextProvider({ children }) {
   // Token
-  const [token, setToken] = useState(localStorage.getItem('token') || "")
+  // const [token, setToken] = useState(localStorage.getItem('token') || "")
+  const [token, setToken] = useState("")
 
   const handleLogin = (token) => {
     setToken(token)
-    localStorage.setItem('token', token)
+    // localStorage.setItem('token', token)
     console.log('Login OK')
   }
 
   const handleLogout = () => {
     setToken('')
-    localStorage.removeItem('token')
+    // localStorage.removeItem('token')
     console.log('Logout OK')
   }
 
