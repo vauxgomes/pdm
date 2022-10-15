@@ -72,8 +72,14 @@ export default function ItemsScreen({ navigation, route }) {
       {
         text: 'Sim',
         onPress: () => {
-          // TODO API
-          setItens((prev) => prev.filter((it) => it.id !== item.id))
+          api
+            .token(token)
+            .deleteItem(cardapio.id, item.id)
+            .then((res) => {
+              if (res.success) {
+                setItens((prev) => prev.filter((it) => it.id !== item.id))
+              }
+            }) 
         },
       },
       {
@@ -93,11 +99,17 @@ export default function ItemsScreen({ navigation, route }) {
           setItens((prev) => [item, ...prev])
         })
     } else {
-      // TODO API
-      const index = itens.findIndex((it) => it.id === item.id)
-      const itens__ = [...itens]
-      itens__[index] = item // Novo item
-      setItens(itens__)
+      api
+        .token(token)
+        .putItem(cardapio.id, item.id, item)
+        .then((res) => {
+          if (res.success) {
+            const index = itens.findIndex((it) => it.id === item.id)
+            const itens__ = [...itens]
+            itens__[index] = item // Novo item
+            setItens(itens__)
+          }
+        })
     }
   }
 

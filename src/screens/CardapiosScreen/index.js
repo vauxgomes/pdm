@@ -63,8 +63,14 @@ export default function CardapiosScreen({ navigation, route }) {
       {
         text: 'Sim',
         onPress: () => {
-          // TODO API
-          setCardapios((prev) => prev.filter((c) => c.id !== cardapio.id))
+          api
+            .token(token)
+            .deleteCardapio(cardapio.id)
+            .then((res) => {
+              if (res.success) {
+                setCardapios((prev) => prev.filter((c) => c.id !== cardapio.id))
+              }
+            })
         },
       },
       {
@@ -84,11 +90,17 @@ export default function CardapiosScreen({ navigation, route }) {
           setCardapios((prev) => [cardapio, ...prev])
         })
     } else {
-      // TODO API
-      const index = cardapios.findIndex((c) => c.id === cardapio.id)
-      const cardapios__ = [...cardapios]
-      cardapios__[index] = cardapio // Novo cardápio
-      setCardapios(cardapios__)
+      api
+        .token(token)
+        .putCardapio(cardapio.id, cardapio)
+        .then((res) => {
+          if (res.success) {
+            const index = cardapios.findIndex((c) => c.id === cardapio.id)
+            const cardapios__ = [...cardapios]
+            cardapios__[index] = cardapio // Novo cardápio
+            setCardapios(cardapios__)
+          }
+        })
     }
   }
 
@@ -100,7 +112,10 @@ export default function CardapiosScreen({ navigation, route }) {
 
         <TouchableOpacity
           style={styles.addButton}
-          onPress={() => setModalVisible(true)}
+          onPress={() => {
+            setCardapio(null)
+            setModalVisible(true)
+          }}
         >
           <Icon name="add" size={font.size.xl} color={color.white} />
         </TouchableOpacity>

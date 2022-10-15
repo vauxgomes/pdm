@@ -23,6 +23,7 @@ class API {
   }
 
   /** Set Token */
+
   token(token) {
     this.config = {
       headers: {
@@ -34,18 +35,21 @@ class API {
   }
 
   /** System */
+
   async getSystemInfo() {
     const response = await this.api.get('/sys')
     return response.data
   }
 
   /** Login */
+
   async login(username, password) {
     const response = await this.api.post('/login', { username, password })
     return response.data
   }
 
   /** Cardápios */
+
   async getCardapios() {
     const response = await this.api.get('/categories', this.config)
     return response.data
@@ -60,7 +64,25 @@ class API {
     return response.data
   }
 
+  async putCardapio(id, cardapio) {
+    const response = await this.api.put(
+      `/categories/${id}/update`,
+      cardapio,
+      this.config
+    )
+    return response.data
+  }
+
+  async deleteCardapio(id) {
+    const response = await this.api.delete(
+      `/categories/${id}/delete`,
+      this.config
+    )
+    return response.data
+  }
+
   /** Itens */
+
   async getItens(id) {
     const response = await this.api.get(`/categories/${id}/items`, this.config)
     return response.data
@@ -70,6 +92,23 @@ class API {
     const response = await this.api.post(
       `/categories/${id}/items/create`,
       item,
+      this.config
+    )
+    return response.data
+  }
+
+  async putItem(cid, id, item) {
+    const response = await this.api.put(
+      `/categories/${cid}/items/${id}/update`,
+      item,
+      this.config
+    )
+    return response.data
+  }
+
+  async deleteItem(cid, id) {
+    const response = await this.api.delete(
+      `/categories/${cid}/items/${id}/delete`,
       this.config
     )
     return response.data
