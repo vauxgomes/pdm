@@ -6,11 +6,11 @@ import Button from '../../components/Button'
 import { color, flex, font, form, margin, space } from '../../styles'
 
 export default function ItemsFromScreen({ navigation, route }) {
-  const { category_id = null, item = null, onSubmit } = route.params
+  const { item = null, onSubmit } = route.params
 
   const [name, setName] = useState(item?.name || '')
   const [description, setDescription] = useState(item?.description || '')
-  const [price, setPrice] = useState(item?.price || 0)
+  const [price, setPrice] = useState(`${item?.price || 0}`)
   const [imgUrl, setImgUrl] = useState(item?.img_url || '')
 
   function handleSubmit() {
@@ -19,7 +19,7 @@ export default function ItemsFromScreen({ navigation, route }) {
         ...item, // Aproveito tudo que está em item
         name,
         description,
-        price,
+        price: parseFloat(price),
         img_url: imgUrl,
       })
 

@@ -16,16 +16,19 @@ export default function Item({ item, onPress, onLongPress }) {
         </View>
 
         <Text style={styles.price}>
-          {item.price &&
-            item.price.toLocaleString('pt-BR', {
-              style: 'currency',
-              currency: 'BRL',
-            })}
+          {(item.price || 0).toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+          })}
         </Text>
       </View>
 
       <Image
-        source={item?.img_url || require('../../../assets/imgs/dummy.jpg')}
+        source={
+          item?.img_url
+            ? { uri: item.img_url }
+            : require('../../../assets/imgs/dummy.jpg')
+        }
         style={styles.img}
       />
     </TouchableOpacity>
